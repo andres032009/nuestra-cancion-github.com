@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palpitando</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #020202;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .image {
+            width: 200px;
+            height: 200px;
+            margin-bottom: 20px;
+        }
+
+        .heart {
+            width: 200px;
+            height: 200px;
+            background-color: #ff073a; /* Rojo fosforescente */
+            position: relative;
+            transform: rotate(-45deg);
+            animation: heartbeat 0.555s infinite;
+            margin-top: 20px;
+        }
+
+        .heart:before,
+        .heart:after {
+            content: '';
+            width: 200px;
+            height: 200px;
+            background-color: #ff073a; /* Rojo fosforescente */
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .heart:before {
+            top: -100px;
+            left: 0;
+        }
+
+        .heart:after {
+            left: 100px;
+            top: 0;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1) rotate(-45deg);
+            }
+            50% {
+                transform: scale(1.2) rotate(-45deg);
+            }
+        }
+
+        .text {
+            color: #ff7f7f;
+            font-family: 'Brush Script MT', cursive;
+            font-size: 4rem;
+            margin-bottom: 80px;
+        }
+
+        audio {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text" id="lyrics">Perdon si dije "te amo" quise decir:</div>
+        <div class="heart"></div>
+    </div>
+
+    <audio id="audio" controls autoplay loop>
+        <source src="videoclub--roi-clip-officiel.mp3" type="audio/mp3">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <script>
+        const lyrics = [
+            "T'en trouveras d'autres des mecs comme moi",
+            "Il y en aura plein des gars pour toi",
+            "Tes boucles brunes s'évaporent",
+            "Dans mon âme, dans mon corps",
+            "Je te cherche dans mes songes",
+            "Je te traque dans mes rêves",
+            "À l'aube ou dans mon ombre errant veine sur tes lèvres",
+            "Écorchant les abîmes de mon cœur",
+            "Écarlate tu n'es que le point fixe de mes songes disparates",
+            "Aime-moi dans la neige",
+            "Aime-moi sous le soleil",
+            "Aime-moi la peau beige",
+            "Dans les fleurs de vermeille",
+            "Je vois des gens qui courent nus",
+            "Je vois des gens qui me sourient",
+            "Mais moi je plane dans la rue",
+            "Dans tes yeux, sous la pluie",
+            "Et je reste l'esprit de tes lointains souvenirs",
+            "Dans mes songes ensevelis, tes larmes, tes rires",
+            "Tu es ma femme iconique",
+            "Tu es mon rubis saphir",
+            "Je suis ta rose lyrique",
+            "Je suis ces gens qui t'admirent",
+            "Aime-moi dans la neige",
+            "Aime-moi sous le soleil",
+            "Aime-moi la peau beige",
+            "Dans les fleurs de vermeille",
+            "Aime-moi dans la neige",
+            "Aime-moi sous le soleil",
+            "Aime-moi la peau beige",
+            "Dans les fleurs de vermeille",
+            "Des jours durant, fuyant la nuit j'parcours ta peau",
+            "Je parcours la ville",
+            "La fumée sortie de ta bouche, file, s'échappe de jours en jours",
+            "Quand j'me réveille dans la nuit",
+            "Je suis seule sous mes vices",
+            "Je t'aime quand il pleut, tu es la nymphe de mes voeux",
+            "Je t'embrasse dans mes rêves et je t'aime au bout des lèvres",
+            "Je déteste le goût mièvre de leur bouches, de leurs rêves",
+            "Dans la nuit tu me regardes",
+            "Sous les nuages je divague",
+            "Avec toi je suis roi",
+            "Aime-moi dans la neige",
+            "Aime-moi sous le soleil",
+            "Aime-moi la peau beige",
+            "Dans les fleurs de vermeille",
+            "Aime-moi dans la neige",
+            "Aime-moi sous le soleil",
+            "Aime-moi la peau beige",
+            "Dans les fleurs de vermeille",
+            "Je suis un garçon de la nuit",
+            "Moi, je laisse tomber les filles",
+            "Je n'aime que tes bas résilles",
+            "Qui dans mes pensées grésillent",
+            "Je suis un garçon de la nuit",
+            "Moi, je laisse tomber les filles",
+            "Je n'aime que tes bas résilles",
+            "Qui dans mes pensées grésillent",
+            "Aime-moi dans la neige",
+            "Aime-moi sous le soleil",
+            "Aime-moi la peau beige",
+            "Dans les fleurs de vermeille",
+            "Aime-moi dans la neige",
+            "Aime-moi sous le soleil",
+            "Aime-moi la peau beige",
+            "Dans les fleurs de vermeille",
+            "Eres la mejor te amo♡"
+        ];
+
+        const timings = [
+            22, 24, 27, 29, 31, 33, 34, 36, 37, 40, 42, 43, 44, 45, 46, 47,
+            48, 49, 52, 54, 55, 56, 57, 59, 61, 63, 65, 68, 70, 72, 74, 76, 
+            80, 81, 83, 85, 86, 88, 90, 92, 93, 94, 112, 114, 116, 119, 122, 
+            123, 125, 128, 130, 131, 132, 133, 139, 140, 141, 142, 148, 150, 
+            152, 154, 157, 159, 161, 163, 165, 170
+        ];
+
+        const lyricElement = document.getElementById("lyrics");
+        const audio = document.getElementById("audio");
+
+        audio.addEventListener("timeupdate", function() {
+            const currentTime = audio.currentTime;
+
+            for (let i = 0; i < timings.length; i++) {
+                if (currentTime > timings[i] && currentTime < timings[i] + 3) {
+                    lyricElement.textContent = lyrics[i];
+                    lyricElement.style.opacity = 1;
+                } else if (currentTime > timings[i] + 3) {
+                    lyricElement.style.opacity = 0;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
